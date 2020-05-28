@@ -1,6 +1,8 @@
 import 'package:cats/services/database.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
+
+
+import '../cat.dart';
 
 void main() => runApp(MaterialApp(
   title: 'CATS 2 ADOPT',
@@ -31,6 +33,81 @@ class FirstPageState extends State<FirstPage> {
 	  print(id);
     }
 
+    List<Cat> cats = [
+      Cat(name: 'Niko', desc: 'The SEXIEST cat alive!!!!',image: 'assets/niko.jpeg'),
+      Cat(name: 'Ano', desc:'The only kitten in the family',image:'assets/ano.jpeg'),
+      Cat(name: 'Takong', desc: 'He is a fierce, yet an adorable cat!', image:'assets/takong.jpg'),
+      Cat(name: 'Amor', desc: 'She is a good cat. She loves to be pet by the owner',image: 'assets/amor.jpeg')
+    ];
+
+  Widget catTemplate(cat){
+    return GestureDetector(
+      onTap: () {
+        showDialog(context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text(cat.name),
+            content: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset(cat.image),
+                    SizedBox(height: 8),
+                    Text(
+                      cat.desc,
+                      textAlign: TextAlign.start,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'I\'M ALLERGIC'
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  RaisedButton(
+                    onPressed: () {
+                      insertdata(cat.name);
+                      Navigator.pop(context);
+                    },
+                    color: Colors.purple,
+                    child: Text('ADOPT'),
+                  )
+                ],
+              )
+            ],
+          );
+        }
+        );
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              cat.name,
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,304 +121,16 @@ class FirstPageState extends State<FirstPage> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: 
-            ListView(
-              children:<Widget> [
-                GestureDetector(
-                  onTap: () {
-                    showDialog(context: context, 
-                    builder: (context) {
-                    return AlertDialog(
-                      title: Text(
-                        'Niko',
-                        style: TextStyle(
-                          fontSize: 25,
-                        )
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment:CrossAxisAlignment.stretch,
-                        children: <Widget> [
-                          Image.asset('assets/niko.jpeg'),
-                          SizedBox(height: 10),
-                          Text(
-                            'The SEXIEST cat alive!!',
-                            style: TextStyle(
-                              fontSize:18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      actions: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children:<Widget> [
-                            FlatButton(
-                              onPressed: (){
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'I\'M ALERGIC!',
-                              )
-                            ),
-                            SizedBox(width: 5),
-                            RaisedButton(
-                              color: Colors.purple,
-                              onPressed: (){
-                                insertdata("Niko");
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'ADOPT',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    );
-                    });
-                  },
-                  child: Card(
-                    child: ListTile(
-                      title: Text(
-                        'Niko',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    )
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(context: context, 
-                    builder: (context) {
-                    return AlertDialog(
-                      title: Text(
-                        'Ano',
-                        style: TextStyle(
-                          fontSize: 25,
-                        )
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment:CrossAxisAlignment.stretch,
-                        children: <Widget> [
-                          Image.asset('assets/ano.jpeg'),
-                          SizedBox(height: 10),
-                          Text(
-                            'The only kitten in the family',
-                            style: TextStyle(
-                              fontSize:18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      actions: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children:<Widget> [
-                            FlatButton(
-                              onPressed: (){
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'I\'M ALERGIC!',
-                              )
-                            ),
-                            SizedBox(width: 5),
-                            RaisedButton(
-                              color: Colors.purple,
-                              onPressed: (){
-                                insertdata("Ano");
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'ADOPT',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    );
-                    });
-                  },
-                  child: Card(
-                    child: ListTile(
-                      title: Text(
-                        'Ano',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(context: context, 
-                    builder: (context) {
-                    return AlertDialog(
-                      title: Text(
-                        'Takong',
-                        style: TextStyle(
-                          fontSize: 25,
-                        )
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment:CrossAxisAlignment.stretch,
-                        children: <Widget> [
-                          Image.asset('assets/takong.jpg'),
-                          SizedBox(height: 10),
-                          Text(
-                            'He is a fierce cat, yet adorable',
-                            style: TextStyle(
-                              fontSize:18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      actions: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children:<Widget> [
-                            FlatButton(
-                              onPressed: (){
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'I\'M ALERGIC!',
-                              )
-                            ),
-                            SizedBox(width: 5),
-                            RaisedButton(
-                              color: Colors.purple,
-                              onPressed: (){
-                                insertdata("Takong");
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'ADOPT',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    );
-                    });
-                  },
-                  child: Card(
-                    child: ListTile(
-                      title: Text(
-                        'Takong',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(context: context, 
-                    builder: (context) {
-                    return AlertDialog(
-                      title: Text(
-                        'Amor',
-                        style: TextStyle(
-                          fontSize: 25,
-                        )
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment:CrossAxisAlignment.stretch,
-                        children: <Widget> [
-                          Image.asset('assets/amor.jpeg'),
-                          SizedBox(height: 10),
-                          Text(
-                            'She is a good cat and she loves to be pet by the owner',
-                            style: TextStyle(
-                              fontSize:18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      actions: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children:<Widget> [
-                            FlatButton(
-                              onPressed: (){
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'I\'M ALERGIC!',
-                              )
-                            ),
-                            SizedBox(width: 5),
-                            RaisedButton(
-                              color: Colors.purple,
-                              onPressed: (){
-                                insertdata("Amor");
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'ADOPT',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    );
-                    });
-                  },
-                  child: Card(
-                    child: ListTile(
-                      title: Text(
-                        'Amor',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            )
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: cats.map((cat) => catTemplate(cat)).toList(),
           ),
+        ),
+      )
     );
   }
 }
   
-
