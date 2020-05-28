@@ -1,5 +1,6 @@
 import 'package:cats/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class SecondPage extends StatefulWidget {
 
@@ -30,17 +31,52 @@ class _SecondPageState extends State<SecondPage> {
       child: Container(
         padding: EdgeInsets.all(5.0),
         child: ListTile(
-          title: Text(
-          row['cats'],
-          style: TextStyle(
-            fontSize: 20,
-          ),
+          title: Align(
+            alignment: Alignment.center,
+            child: Text(
+            row['cats'],
+            style: TextStyle(
+              fontSize: 20,
+            ),
         ),
+          ),
         onLongPress: () {
-          dbhelper.deletedata(row['id']);
-          setState(() {
-
-          });
+          showDialog(context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(row['cats']),
+              content: Text(
+                  'Are your sure you want to abandon this innocent cat?',
+                style: TextStyle(
+                  fontSize: 17,
+                ),
+              ),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('CANCEL'),
+                    ),
+                    SizedBox(width: 5),
+                    RaisedButton(
+                      onPressed: () {
+                        dbhelper.deletedata(row['id']);
+                        setState(() {});
+                        Navigator.pop(context);
+                      },
+                      child: Text('ABANDON'),
+                      color: Colors.purple,
+                    )
+                  ],
+                )
+              ],
+            );
+          }
+          );
         },
       ),
       ),
